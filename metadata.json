@@ -1,0 +1,6 @@
+{
+  "name": "Studio Bella - Agendamento & Gestão",
+  "description": "App PWA offline com IndexedDB para agendamento online de salão e estética, catálogo de procedimentos, link para clientes e controle financeiro.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
