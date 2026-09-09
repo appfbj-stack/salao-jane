@@ -17,6 +17,7 @@ import {
   ChevronRight,
   AlertCircle,
   Scissors,
+  Share2,
 } from 'lucide-react';
 import { Appointment, ServiceItem, StudioSettings } from '../types';
 import { db } from '../db/indexedDb';
@@ -24,9 +25,9 @@ import {
   formatCurrency,
   formatDateBR,
   formatDateHuman,
-  generateWhatsAppReminderMessage,
   downloadICSFile,
 } from '../utils/formatters';
+import { WhatsAppReminderModal } from './WhatsAppReminderModal';
 
 interface AgendaViewProps {
   appointments: Appointment[];
@@ -50,6 +51,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
   );
   const [statusFilter, setStatusFilter] = useState<string>('todos');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedAptForReminder, setSelectedAptForReminder] = useState<Appointment | null>(null);
 
   // Move date back/forward by 1 day
   const changeDate = (daysDelta: number) => {
@@ -102,12 +104,7 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
   };
 
   const handleSendWhatsAppReminder = (apt: Appointment) => {
-    const msg = generateWhatsAppReminderMessage(apt, settings);
-    const cleanPhone = apt.clientPhone.replace(/\D/g, '');
-    const url = cleanPhone
-      ? `https://api.whatsapp.com/send?phone=55${cleanPhone}&text=${msg}`
-      : `https://api.whatsapp.com/send?text=${msg}`;
-    window.open(url, '_blank');
+    setSelectedAptForReminder(apt);
   };
 
   return (
@@ -322,10 +319,15 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                     {/* Phone & Notes */}
                     <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
                       {apt.clientPhone && (
-                        <span className="flex items-center gap-1 font-mono">
-                          <Phone className="w-3 h-3 text-neutral-400" />
-                          {apt.clientPhone}
-                        </span>
+                        <button
+                          type="button"
+                          onClick={() => handleSendWhatsAppReminder(apt)}
+                          className="flex items-center gap-1 font-mono text-neutral-600 hover:text-emerald-700 transition"
+                          title="Clique para gerar link e enviar lembrete via WhatsApp"
+                        >
+                          <Phone className="w-3 h-3 text-emerald-600" />
+                          <span>{apt.clientPhone}</span>
+                        </button>
                       )}
                       {apt.notes && (
                         <span className="italic text-neutral-400 truncate max-w-xs">
@@ -347,14 +349,16 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-1.5">
-                    {/* WhatsApp Reminder / Contact */}
+                  <div className="flex items-center gap-1.5 flex-wrap md:flex-nowrap">
+                    {/* WhatsApp Reminder Button */}
                     <button
+                      id={`btn-whatsapp-reminder-${apt.id}`}
                       onClick={() => handleSendWhatsAppReminder(apt)}
-                      className="p-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition border border-emerald-200"
-                      title="Enviar lembrete de atendimento no WhatsApp"
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition border border-emerald-200 text-xs font-bold shadow-2xs active:scale-95"
+                      title="Gerar link de WhatsApp e enviar lembrete com detalhes do agendamento"
                     >
-                      <MessageCircle className="w-4 h-4" />
+                      <MessageCircle className="w-4 h-4 text-emerald-600 fill-emerald-600/20" />
+                      <span>Lembrete</span>
                     </button>
 
                     {/* ICS Calendar */}
@@ -394,6 +398,14 @@ export const AgendaView: React.FC<AgendaViewProps> = ({
           })}
         </div>
       )}
+
+      {/* WhatsApp Reminder Modal */}
+      <WhatsAppReminderModal
+        isOpen={!!selectedAptForReminder}
+        onClose={() => setSelectedAptForReminder(null)}
+        appointment={selectedAptForReminder}
+        settings={settings}
+      />
     </div>
   );
 };

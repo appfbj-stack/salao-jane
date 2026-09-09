@@ -82,17 +82,90 @@ export function generateWhatsAppBookingMessage(
   }
 }
 
-export function generateWhatsAppReminderMessage(apt: Appointment, settings: StudioSettings): string {
-  const serviceList = apt.services.map((s) => s.name).join(', ');
-  const dateFormatted = formatDateBR(apt.date);
+export function buildWhatsAppUrl(phone: string, text: string): string {
+  const digits = cleanPhoneDigits(phone);
+  let fullNumber = digits;
+  // If Brazilian standard number without country code (e.g. 11987654321 or 1187654321)
+  if (digits.length === 10 || digits.length === 11) {
+    fullNumber = `55${digits}`;
+  }
+  const encoded = encodeURIComponent(text);
+  if (fullNumber) {
+    return `https://api.whatsapp.com/send?phone=${fullNumber}&text=${encoded}`;
+  }
+  return `https://api.whatsapp.com/send?text=${encoded}`;
+}
 
-  return encodeURIComponent(
-    `Oi *${apt.clientName}*, lembrete do seu atendimento no *${settings.studioName}*! ⏰✨\n\n` +
-      `📅 *Quando:* ${dateFormatted} às ${apt.timeSlot}\n` +
-      `✂️ *Serviço:* ${serviceList}\n` +
-      `📍 *Local:* ${settings.address}\n\n` +
-      `Se precisar remarcar, por favor nos avise com antecedência. Até logo! 💅`
-  );
+export function getReminderMessageText(
+  apt: Appointment,
+  settings: StudioSettings,
+  type: 'lembrete' | 'confirmacao' | 'hoje' | 'comprovante' = 'lembrete'
+): string {
+  const dateFormatted = formatDateBR(apt.date);
+  const dayName = formatDateHuman(apt.date);
+  const serviceList = apt.services.map((s) => `• ${s.name} (${formatCurrency(s.price)})`).join('\n');
+  const serviceNamesOnly = apt.services.map((s) => s.name).join(', ');
+
+  switch (type) {
+    case 'confirmacao':
+      return (
+        `Olá, *${apt.clientName}*! Tudo bem? ✨\n\n` +
+        `Passando para confirmar o seu agendamento no *${settings.studioName || 'Studio'}*:\n\n` +
+        `📅 *Data:* ${dateFormatted} (${dayName})\n` +
+        `⏰ *Horário:* ${apt.timeSlot}\n` +
+        `✂️ *Procedimento(s):*\n${serviceList}\n` +
+        `💵 *Valor:* ${formatCurrency(apt.totalPrice)}\n` +
+        (settings.address ? `📍 *Endereço:* ${settings.address}\n\n` : '\n') +
+        `👉 *Por favor, responda confirmando sua presença:*\n` +
+        `• Digite *SIM* para confirmar\n` +
+        `• Ou avise caso precise reagendar\n\n` +
+        `Agradecemos a preferência! Te aguardamos! 💕`
+      );
+
+    case 'hoje':
+      return (
+        `Oi, *${apt.clientName}*! 🌸✨\n\n` +
+        `Lembrando que *hoje* é o dia do seu atendimento no *${settings.studioName || 'Studio'}*!\n\n` +
+        `⏰ *Horário:* ${apt.timeSlot}\n` +
+        `✂️ *Procedimento:* ${serviceNamesOnly}\n` +
+        (settings.address ? `📍 *Local:* ${settings.address}\n\n` : '\n') +
+        `Estamos preparando tudo com muito carinho para receber você. Até logo! 💅💖`
+      );
+
+    case 'comprovante':
+      return (
+        `🧾 *COMPROVANTE DE ATENDIMENTO* 🧾\n` +
+        `*${settings.studioName || 'Studio'}*\n` +
+        `--------------------------------\n` +
+        `👤 *Cliente:* ${apt.clientName}\n` +
+        `📅 *Data:* ${dateFormatted}\n` +
+        `⏰ *Horário:* ${apt.timeSlot}\n` +
+        `💳 *Pagamento:* ${apt.paymentMethod ? apt.paymentMethod.toUpperCase() : 'CONCLUÍDO'}\n\n` +
+        `*Serviços Realizados:*\n${serviceList}\n` +
+        `--------------------------------\n` +
+        `💰 *VALOR TOTAL:* ${formatCurrency(apt.totalPrice)}\n\n` +
+        `Muito obrigado pela preferência e confiança! Volte sempre! ✨💖`
+      );
+
+    case 'lembrete':
+    default:
+      return (
+        `Oi, *${apt.clientName}*! Tudo bem? 💖\n\n` +
+        `Lembrete do seu horário agendado no *${settings.studioName || 'Studio'}*:\n\n` +
+        `📅 *Data:* ${dateFormatted} (${dayName})\n` +
+        `⏰ *Horário:* ${apt.timeSlot}\n` +
+        `✂️ *Procedimento(s):*\n${serviceList}\n` +
+        `💵 *Valor:* ${formatCurrency(apt.totalPrice)}\n` +
+        (settings.address ? `📍 *Endereço:* ${settings.address}\n\n` : '\n') +
+        (settings.bookingNotice ? `⚠️ _${settings.bookingNotice}_\n\n` : '') +
+        `Se precisar remarcar, por favor nos avise com antecedência. Te esperamos! 💅✨`
+      );
+  }
+}
+
+export function generateWhatsAppReminderMessage(apt: Appointment, settings: StudioSettings): string {
+  const text = getReminderMessageText(apt, settings, 'lembrete');
+  return encodeURIComponent(text);
 }
 
 export function generateWhatsAppReceiptMessage(apt: Appointment, settings: StudioSettings): string {
