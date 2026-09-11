@@ -530,6 +530,33 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               className="w-full rounded-xl border border-neutral-300 px-3.5 py-2 text-xs text-neutral-900 focus:outline-hidden focus:ring-2 focus:ring-rose-500"
             />
           </div>
+
+          {/* Custom Share Message */}
+          <div className="pt-2 border-t border-neutral-100">
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-semibold text-neutral-700">
+                Mensagem Padrão de Envio do Link (WhatsApp / Redes)
+              </label>
+              <button
+                type="button"
+                onClick={onOpenShareModal}
+                className="text-xs font-semibold text-rose-600 hover:text-rose-700 flex items-center gap-1"
+              >
+                <Share2 className="w-3 h-3" />
+                <span>Abrir Editor Completo</span>
+              </button>
+            </div>
+            <textarea
+              rows={3}
+              value={formData.customShareMessage || ''}
+              onChange={(e) => handleInputChange('customShareMessage', e.target.value)}
+              placeholder="Deixe em branco para usar o modelo padrão com link e endereço, ou digite aqui seu texto personalizado fixo..."
+              className="w-full rounded-xl border border-neutral-300 px-3.5 py-2 text-xs text-neutral-900 focus:outline-hidden focus:ring-2 focus:ring-rose-500"
+            />
+            <span className="text-[11px] text-neutral-400 block mt-1">
+              Dica: Você também pode personalizar livremente a mensagem na janela de envio rápido de link com modelos e prévia.
+            </span>
+          </div>
         </div>
 
         {/* SAVE BUTTON */}

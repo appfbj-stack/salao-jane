@@ -226,6 +226,8 @@ export function App() {
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
         settings={settings}
+        onOpenClientView={() => setIsClientMode(true)}
+        onRefresh={loadDatabaseData}
       />
 
       <NewAppointmentModal

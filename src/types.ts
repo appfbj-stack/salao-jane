@@ -121,6 +121,7 @@ export interface StudioSettings {
   onlineBookingEnabled: boolean;
   bookingNotice: string;
   currency: string;
+  customShareMessage?: string;
 }
 
 export interface ClientRecord {
