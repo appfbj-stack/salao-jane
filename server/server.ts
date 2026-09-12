@@ -6,6 +6,12 @@ import { bootstrap } from './bootstrap.js';
 const app = express();
 app.use(express.json({ limit: '5mb' }));
 
+// Log simples pra debug de conexão resetada pelo Caddy
+app.use((req, _res, next) => {
+  console.log(`[req] ${req.method} ${req.path}`);
+  next();
+});
+
 // CORS simples (front no mesmo host via Caddy, mas libera testes locais)
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -219,9 +225,13 @@ app.delete('/api/clients/:id', async (req, res) => {
 
 // ---- FRONTEND (static) ----
 const distDir = join(process.cwd(), 'dist');
+console.log('[salao-jane] servindo dist de', distDir);
 app.use(express.static(distDir, { maxAge: '1h' }));
-app.get(/^(?!\/api\/).*/, (_req, res) => {
-  res.sendFile(join(distDir, 'index.html'));
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) return next();
+  res.sendFile(join(distDir, 'index.html'), (err) => {
+    if (err) next(err);
+  });
 });
 
 // ---- START ----
