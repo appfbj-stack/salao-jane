@@ -10,6 +10,8 @@ import {
   INITIAL_TRANSACTIONS,
 } from './seed-data.js';
 
+const schemaPath = join(__dirname, 'schema.sql');
+
 let bootstrapped = false;
 
 export async function bootstrap(): Promise<void> {
@@ -17,7 +19,6 @@ export async function bootstrap(): Promise<void> {
   bootstrapped = true;
 
   console.log('[bootstrap] aplicando schema...');
-  const schemaPath = join(__dirname, 'schema.sql');
   const schema = readFileSync(schemaPath, 'utf-8');
   await pool.query(schema);
 

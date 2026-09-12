@@ -218,7 +218,7 @@ app.delete('/api/clients/:id', async (req, res) => {
 });
 
 // ---- FRONTEND (static) ----
-const distDir = join(__dirname, '..', 'dist');
+const distDir = join(process.cwd(), 'dist');
 app.use(express.static(distDir, { maxAge: '1h' }));
 app.get(/^(?!\/api\/).*/, (_req, res) => {
   res.sendFile(join(distDir, 'index.html'));
