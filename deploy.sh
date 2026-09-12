@@ -69,7 +69,7 @@ services:
     env_file:
       - .env
     ports:
-      - "127.0.0.1:${PORT}:3001"
+      - "127.0.0.1:${PORT}:${PORT}"
     networks:
       - dokploy-network
 networks:
