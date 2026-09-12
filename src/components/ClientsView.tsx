@@ -14,7 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { ClientRecord, StudioSettings } from '../types';
-import { db } from '../db/indexedDb';
+import { db } from '../db/api';
 import { formatCurrency, formatDateBR, formatPhone } from '../utils/formatters';
 
 interface ClientsViewProps {

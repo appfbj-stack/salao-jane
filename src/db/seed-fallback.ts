@@ -1,0 +1,48 @@
+// Fallback para o front caso o backend esteja indisponível (offline)
+import { CategoryInfo, ServiceItem, StudioSettings } from '../types';
+
+export const DEFAULT_CATEGORIES: CategoryInfo[] = [
+  { id: 'cabelo', name: 'Cabelo', iconName: 'Scissors', color: 'from-amber-500 to-rose-500', description: 'Cortes, escovas, hidratação, mechas e químicas.' },
+  { id: 'unhas', name: 'Unhas', iconName: 'Sparkles', color: 'from-pink-500 to-rose-600', description: 'Manicure, pedicure, alongamento em gel e blindagem.' },
+  { id: 'sobrancelhas', name: 'Sobrancelhas & Cílios', iconName: 'Eye', color: 'from-purple-500 to-indigo-600', description: 'Design personalizado, henna, micropigmentação e lash lifting.' },
+  { id: 'estetica', name: 'Estética Facial & Corporal', iconName: 'Smile', color: 'from-emerald-500 to-teal-600', description: 'Limpeza de pele, drenagem, massagens e tratamentos.' },
+  { id: 'depilacao', name: 'Depilação', iconName: 'Flame', color: 'from-orange-500 to-amber-600', description: 'Depilação cera morna, egípcia e laser.' },
+  { id: 'maquiagem', name: 'Maquiagem & Noivas', iconName: 'Palette', color: 'from-fuchsia-500 to-pink-600', description: 'Produções para eventos, formaturas e ensaios.' },
+];
+
+export const INITIAL_SERVICES: ServiceItem[] = [
+  { id: 'srv_corte_fem', name: 'Corte Feminino + Escova Modelada', category: 'cabelo', durationMinutes: 60, price: 90.0, costPrice: 12.0, description: 'Lavagem especial, corte personalizado, finalização com escova e reparador.', imageUrl: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80', active: true, order: 1 },
+  { id: 'srv_corte_masc', name: 'Corte Masculino & Barba Terapia', category: 'cabelo', durationMinutes: 45, price: 65.0, costPrice: 8.0, description: 'Corte tesoura/máquina com toalha quente e alinhamento de barba.', imageUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80', active: true, order: 2 },
+  { id: 'srv_hidratacao', name: 'Hidratação Profunda & Cronograma', category: 'cabelo', durationMinutes: 50, price: 110.0, costPrice: 25.0, description: 'Tratamento intensivo de reposição hídrica e lipídica com marcas premium.', imageUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80', active: true, order: 3 },
+  { id: 'srv_mechas', name: 'Mechas / Morena Iluminada', category: 'cabelo', durationMinutes: 180, price: 350.0, costPrice: 75.0, description: 'Técnica personalizada de iluminação com tonalização e tratamento reconstrutor.', imageUrl: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=600&q=80', active: true, order: 4 },
+  { id: 'srv_manicure_pedicure', name: 'Pé & Mão Completo (Tradicional)', category: 'unhas', durationMinutes: 60, price: 65.0, costPrice: 7.0, description: 'Cutilagem funda e delicada, esmaltação duradoura e hidratação das cutículas.', imageUrl: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=600&q=80', active: true, order: 5 },
+  { id: 'srv_alongamento_gel', name: 'Alongamento em Gel / Fibra de Vidro', category: 'unhas', durationMinutes: 120, price: 160.0, costPrice: 30.0, description: 'Alongamento resistente com formato natural, ponto de tensão e cutilagem russa.', imageUrl: 'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=600&q=80', active: true, order: 6 },
+  { id: 'srv_spa_pes', name: 'Spa dos Pés Relaxante', category: 'unhas', durationMinutes: 45, price: 75.0, costPrice: 15.0, description: 'Higienização, esfoliação com sais minerais, massagem podal e parafina térmica.', imageUrl: 'https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?auto=format&fit=crop&w=600&q=80', active: true, order: 7 },
+  { id: 'srv_design_sobrancelha', name: 'Design de Sobrancelhas com Henna', category: 'sobrancelhas', durationMinutes: 40, price: 55.0, costPrice: 5.0, description: 'Mapeamento facial simétrico, limpeza precisa e aplicação de henna orgânica.', imageUrl: 'https://images.unsplash.com/photo-1597225244660-1cd128c64284?auto=format&fit=crop&w=600&q=80', active: true, order: 8 },
+  { id: 'srv_lash_lifting', name: 'Lash Lifting & Tintura de Cílios', category: 'sobrancelhas', durationMinutes: 60, price: 120.0, costPrice: 20.0, description: 'Curvatura e nutrição dos fios naturais dos cílios, proporcionando efeito rímel por até 6 semanas.', imageUrl: 'https://images.unsplash.com/photo-1583001809873-a128495da465?auto=format&fit=crop&w=600&q=80', active: true, order: 9 },
+  { id: 'srv_micro_sobrancelha', name: 'Micropigmentação Shadow / Fio a Fio', category: 'sobrancelhas', durationMinutes: 120, price: 380.0, costPrice: 50.0, description: 'Preenchimento semipermanente ultra realista com anestésico tópico e pigmentos de alta fixação.', imageUrl: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80', active: true, order: 10 },
+  { id: 'srv_limpeza_pele', name: 'Limpeza de Pele Profunda com Ozônio', category: 'estetica', durationMinutes: 80, price: 140.0, costPrice: 25.0, description: 'Vapor de ozônio, extração sem dor, alta frequência, máscara calmante e fototerapia LED.', imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80', active: true, order: 11 },
+  { id: 'srv_drenagem_linfatica', name: 'Drenagem Linfática / Massagem Modeladora', category: 'estetica', durationMinutes: 60, price: 110.0, costPrice: 10.0, description: 'Redução de retenção de líquidos, desinchaço e ativação da circulação corporal.', imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=600&q=80', active: true, order: 12 },
+  { id: 'srv_massagem_relaxante', name: 'Massagem Relaxante com Aromaterapia', category: 'estetica', durationMinutes: 50, price: 100.0, costPrice: 10.0, description: 'Alívio de tensões musculares, óleos essenciais terapêuticos e pedras quentes.', imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80', active: true, order: 13 },
+];
+
+export const INITIAL_SETTINGS: StudioSettings = {
+  studioName: 'Studio Bella & Estética',
+  slogan: 'Realçando sua beleza única com carinho e excelência ✨',
+  logoUrl: '',
+  phone: '(11) 98765-4321',
+  whatsapp: '11987654321',
+  address: 'Av. Paulista, 1000 - Sala 42, São Paulo - SP',
+  instagram: '@studiobella.estetica',
+  pixKey: 'contato@studiobella.com.br',
+  pixKeyType: 'email',
+  openingHour: '08:00',
+  closingHour: '19:00',
+  intervalMinutes: 30,
+  lunchBreak: { enabled: true, start: '12:00', end: '13:00' },
+  workingDays: [1, 2, 3, 4, 5, 6],
+  appointmentAdvanceDays: 30,
+  onlineBookingEnabled: true,
+  bookingNotice: 'Por favor, chegue com 5 a 10 minutos de antecedência. Para cancelamentos, avise com no mínimo 2 horas.',
+  currency: 'R$',
+};

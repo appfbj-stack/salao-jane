@@ -20,7 +20,7 @@ import {
   Share2,
 } from 'lucide-react';
 import { Appointment, ServiceItem, StudioSettings } from '../types';
-import { db } from '../db/indexedDb';
+import { db } from '../db/api';
 import {
   formatCurrency,
   formatDateBR,

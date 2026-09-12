@@ -20,7 +20,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { FinancialTransaction, PaymentMethod } from '../types';
-import { db } from '../db/indexedDb';
+import { db } from '../db/api';
 import { formatCurrency, formatDateBR } from '../utils/formatters';
 
 interface FinancialViewProps {

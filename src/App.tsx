@@ -21,7 +21,7 @@ import {
   ServiceItem,
   StudioSettings,
 } from './types';
-import { db } from './db/indexedDb';
+import { db } from './db/api';
 import { Header, ActiveTab } from './components/Header';
 import { AgendaView } from './components/AgendaView';
 import { ServicesView } from './components/ServicesView';

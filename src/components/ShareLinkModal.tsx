@@ -16,7 +16,7 @@ import {
   Edit3,
 } from 'lucide-react';
 import { StudioSettings } from '../types';
-import { db } from '../db/indexedDb';
+import { db } from '../db/api';
 import { cleanPhoneDigits } from '../utils/formatters';
 
 interface ShareLinkModalProps {

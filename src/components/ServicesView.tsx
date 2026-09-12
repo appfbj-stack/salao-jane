@@ -19,7 +19,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { CategoryInfo, ServiceItem } from '../types';
-import { db } from '../db/indexedDb';
+import { db } from '../db/api';
 import { formatCurrency } from '../utils/formatters';
 
 interface ServicesViewProps {

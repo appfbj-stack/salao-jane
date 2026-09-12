@@ -20,7 +20,7 @@ import {
   Share2,
 } from 'lucide-react';
 import { StudioSettings } from '../types';
-import { db } from '../db/indexedDb';
+import { db } from '../db/api';
 import { formatPhone } from '../utils/formatters';
 
 interface SettingsViewProps {

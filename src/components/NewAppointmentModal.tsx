@@ -11,7 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Appointment, BookedServiceSnapshot, ServiceItem, StudioSettings } from '../types';
-import { db } from '../db/indexedDb';
+import { db } from '../db/api';
 import { formatCurrency, formatPhone } from '../utils/formatters';
 
 interface NewAppointmentModalProps {
