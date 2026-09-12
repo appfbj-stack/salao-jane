@@ -10,7 +10,9 @@ import {
   INITIAL_TRANSACTIONS,
 } from './seed-data.js';
 
-const schemaPath = join(__dirname, 'schema.sql');
+// Em bundle, __dirname aponta para /app. O schema.sql vive em /app/server/schema.sql
+// (Dockerfile copia o diretorio server/ inteiro).
+const schemaPath = join(__dirname, 'server', 'schema.sql');
 
 let bootstrapped = false;
 
