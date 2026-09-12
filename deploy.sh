@@ -5,7 +5,7 @@ set -e
 
 APP=salao-jane
 DOMAIN=salaojane.fbautomacao.space
-PORT=3001
+PORT=3025
 DB_NAME=salao_jane_db
 DB_USER=salao_jane_user
 PASSWORD_FILE=/tmp/salao-jane-db-password
