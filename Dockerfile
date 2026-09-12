@@ -15,8 +15,8 @@ COPY --from=build /app/server.js ./
 COPY --from=build /app/server ./server
 COPY --from=build /app/dist ./dist
 ENV NODE_ENV=production
-ENV PORT=3001
-EXPOSE 3001
+ENV PORT=3025
+EXPOSE 3025
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
-  CMD curl -fs http://127.0.0.1:3001/api/health || exit 1
+  CMD curl -fs http://127.0.0.1:3025/api/health || exit 1
 CMD ["node", "server.js"]
