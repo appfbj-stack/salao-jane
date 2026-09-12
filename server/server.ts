@@ -1,11 +1,7 @@
 import express from 'express';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 import pool from './db.js';
 import { bootstrap } from './bootstrap.js';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 app.use(express.json({ limit: '5mb' }));

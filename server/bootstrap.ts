@@ -1,7 +1,6 @@
 // Bootstrap: cria schema e popula dados iniciais (idempotente)
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 import pool from './db.js';
 import {
   DEFAULT_CATEGORIES,
@@ -10,8 +9,6 @@ import {
   INITIAL_APPOINTMENTS,
   INITIAL_TRANSACTIONS,
 } from './seed-data.js';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let bootstrapped = false;
 
